@@ -1,0 +1,25 @@
+{
+	"name": "bairnscript",
+	"version": "1.0.0",
+	"description": "A block based JavaScript wrapper for kids build using Google Blockly.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/preetvadaliya/BairnScript.git"
+	},
+	"keywords": [
+		"bairnscript"
+	],
+	"author": "Preet P. Vadaliya",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/preetvadaliya/BairnScript/issues"
+	},
+	"homepage": "https://github.com/preetvadaliya/BairnScript#readme",
+	"dependencies": {
+		"blockly": "^8.0.0"
+	}
+}
