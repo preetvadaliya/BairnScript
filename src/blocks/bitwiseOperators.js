@@ -40,8 +40,7 @@ Blockly.Blocks['BITWISE_OPERATORS'] = {
 		} else {
 			this.getInput('INPUT0').setVisible(true);
 			this.getInput('INPUT1').setVisible(true);
-    }
-    this.render();
+		}
 	},
 	typeBlocking: [
 		{

@@ -37,15 +37,14 @@ Blockly.Blocks['ARITHMETIC_OPERATORS'] = {
 	validate: function (value) {
 		this.getInput('INPUT0').setVisible(false);
 		this.getInput('INPUT1').setVisible(false);
-		if (value !== 'PRI' || value !== 'PRD') {
-			this.getInput('INPUT0').setVisible(true);
-		} else if (value === 'POI' || value === 'POD') {
+		if (value === 'PRI' || value === 'PRD') {
 			this.getInput('INPUT1').setVisible(true);
+		} else if (value === 'POI' || value === 'POD') {
+			this.getInput('INPUT0').setVisible(true);
 		} else {
 			this.getInput('INPUT0').setVisible(true);
 			this.getInput('INPUT1').setVisible(true);
 		}
-		this.render();
 	},
 	typeBlocking: [
 		{

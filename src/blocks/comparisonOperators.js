@@ -47,7 +47,6 @@ Blockly.Blocks['COMPARISON_OPERATORS'] = {
 			this.getInput('INPUT1').setVisible(true);
 			this.getInput('INPUT0').setCheck(null);
 		}
-		this.render();
 	},
 	typeBlocking: [
 		{
