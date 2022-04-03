@@ -1,0 +1,53 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Towerly Blockly</title>
+
+
+</head>
+
+<body>
+  <div id="block-div">
+  </div>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <block type="ARITHMETIC_OPERATORS"></block>
+    <block type="BITWISE_OPERATORS"></block>
+    <block type="COMPARISON_OPERATORS"></block>
+    <block type="VARIABLES_INIT_GLOBAL"></block>
+    <block type="VARIABLES_GET"></block>
+  </xml>
+
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <script src="./src/workspaceExport.js"></script>
+  <script src="./src/workspaceActions.js"></script>
+  <script src="./src/blockCategories.js"></script>
+  <script src="./src/blockColors.js"></script>
+  <script src="./src/utils.js"></script>
+  <script src="./src/identifier.js"></script>
+  <script src="./src/blocks/arithmeticOperators.js"></script>
+  <script src="./src/blocks/bitwiseOperators.js"></script>
+  <script src="./src/blocks/comparisonOperators.js"></script>
+  <script src="./src/blocks/variables.js"></script>
+  <script>
+    var w = Blockly.inject('block-div',
+      {
+        toolbox: document.getElementById('toolbox'),
+        grid:
+        {
+          spacing: 20,
+          length: 1,
+          colour: '#212121',
+          snap: true
+        },
+        trashcan: true
+      }
+    );
+  </script>
+  <script src="./src/variableDB.js"></script>
+</body>
+
+</html>

@@ -29,46 +29,6 @@ const BAIRN_ACTIONS = [
 	},
 
 	{
-		displayText: 'Arrange All Blocks by Category',
-		preconditionFn: function (scope) {
-			return scope.workspace.scopeOnlyWorkspace();
-		},
-		callback: function (scope) {
-			let topBlocks = [].concat(scope.workspace.topBlocks_);
-			let blockMap = {};
-			Array.from(topBlocks).forEach((block) => {
-				if (block.category in blockMap) {
-					blockMap[block.category].push({
-						xml: Blockly.Xml.blockToDom(block, true),
-						comment: block.getCommentText(),
-						warning: block.warning,
-					});
-				} else {
-					blockMap[block.category] = [
-						{
-							xml: Blockly.Xml.blockToDom(block, true),
-							comment: block.getCommentText(),
-							warning: block.warning,
-						},
-					];
-				}
-			});
-			scope.workspace.clear();
-			Object.keys(blockMap).forEach((category) => {
-				Array.from(blockMap[category]).forEach((block) => {
-					let newBlock = Blockly.Xml.domToBlock(block.xml, scope.workspace);
-					newBlock.setCommentText(block.comment);
-					newBlock.setWarningText(block.warning);
-				});
-			});
-			workspace.cleanUp();
-		},
-		scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
-		id: 'handleCleanUpByCategory',
-		weight: 1,
-	},
-
-	{
 		displayText: 'Undo',
 		preconditionFn: function (scope) {
 			return scope.workspace.scopeOnlyWorkspace();
