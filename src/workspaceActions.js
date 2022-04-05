@@ -29,46 +29,6 @@ const BAIRN_ACTIONS = [
 	},
 
 	{
-		displayText: 'Arrange All Blocks by Category',
-		preconditionFn: function (scope) {
-			return scope.workspace.scopeOnlyWorkspace();
-		},
-		callback: function (scope) {
-			let topBlocks = [].concat(scope.workspace.topBlocks_);
-			let blockMap = {};
-			Array.from(topBlocks).forEach((block) => {
-				if (block.category in blockMap) {
-					blockMap[block.category].push({
-						xml: Blockly.Xml.blockToDom(block, true),
-						comment: block.getCommentText(),
-						warning: block.warning,
-					});
-				} else {
-					blockMap[block.category] = [
-						{
-							xml: Blockly.Xml.blockToDom(block, true),
-							comment: block.getCommentText(),
-							warning: block.warning,
-						},
-					];
-				}
-			});
-			scope.workspace.clear();
-			Object.keys(blockMap).forEach((category) => {
-				Array.from(blockMap[category]).forEach((block) => {
-					let newBlock = Blockly.Xml.domToBlock(block.xml, scope.workspace);
-					newBlock.setCommentText(block.comment);
-					newBlock.setWarningText(block.warning);
-				});
-			});
-			workspace.cleanUp();
-		},
-		scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
-		id: 'handleCleanUpByCategory',
-		weight: 1,
-	},
-
-	{
 		displayText: 'Undo',
 		preconditionFn: function (scope) {
 			return scope.workspace.scopeOnlyWorkspace();
@@ -104,7 +64,7 @@ const BAIRN_ACTIONS = [
 		},
 		scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
 		id: 'handleDelete',
-		weight: 4,
+		weight: 5,
 	},
 
 	{
@@ -117,7 +77,120 @@ const BAIRN_ACTIONS = [
 		},
 		scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
 		id: 'handleExportWorkspacePNG',
-		weight: 5,
+		weight: 6,
+	},
+
+	{
+		displayText: 'Create Comment',
+		preconditionFn: function (scope) {
+			if (scope.block.comment === null) {
+				this.displayText = 'Create Comment';
+			} else {
+				this.displayText = 'Delete Comment';
+			}
+			if (scope.block.isInFlyout || scope.block.isInMutator) {
+				return 'hidden';
+			} else {
+				return 'enabled';
+			}
+		},
+		callback: function (scope) {
+			if (scope.block.comment === null) {
+				scope.block.setCommentText('--**Your Comment**--');
+				scope.block.comment.setVisible(true);
+			} else {
+				scope.block.setCommentText(null);
+			}
+		},
+		scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+		id: 'handleBlockComment',
+		weight: 0,
+	},
+
+	{
+		displayText: 'Enable Block',
+		preconditionFn: function (scope) {
+			if (scope.block.isEnabled()) {
+				this.displayText = 'Disable Block';
+			} else {
+				this.displayText = 'Enable Block';
+			}
+			if (scope.block.isInFlyout || scope.block.isInMutator) {
+				return 'hidden';
+			} else {
+				return 'enabled';
+			}
+		},
+		callback: function (scope) {
+			if (scope.block.isEnabled()) {
+				scope.block.setEnabled(false);
+			} else {
+				scope.block.setEnabled(true);
+			}
+		},
+		scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+		id: 'handleBlockEnabled',
+		weight: 1,
+	},
+
+	{
+		displayText: 'Delete Block',
+		preconditionFn: function (scope) {
+			if (scope.block.isInFlyout || scope.block.isInMutator) {
+				return 'hidden';
+			} else {
+				return 'enabled';
+			}
+		},
+		callback: function (scope) {
+			scope.block.dispose(true, true);
+		},
+		scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+		id: 'handleBlockDelete',
+		weight: 2,
+	},
+
+	{
+		displayText: 'Hide Warning',
+		preconditionFn: function (scope) {
+			if (scope.block.isInFlyout || scope.block.isInMutator || scope.block.warning === null) {
+				return 'hidden';
+			} else {
+				return 'enabled';
+			}
+		},
+		callback: function (scope) {
+			scope.block.setWarningText(null);
+		},
+		scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+		id: 'handleBlockWarning',
+		weight: 3,
+	},
+
+	{
+		displayText: 'Collapse',
+		preconditionFn: function (scope) {
+			if (scope.block.isCollapsed()) {
+				this.displayText = 'Expand';
+			} else {
+				this.displayText = 'Collapse';
+			}
+			if (scope.block.isInFlyout || scope.block.isInMutator) {
+				return 'hidden';
+			} else {
+				return 'enabled';
+			}
+		},
+		callback: function (scope) {
+			if (scope.block.isCollapsed()) {
+				scope.block.setCollapsed(false);
+			} else {
+				scope.block.setCollapsed(true);
+			}
+		},
+		scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+		id: 'handleBlockCollapse',
+		weight: 4,
 	},
 ];
 
