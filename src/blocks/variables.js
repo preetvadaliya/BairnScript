@@ -6,8 +6,8 @@
 Blockly.Blocks['VARIABLES_INIT_GLOBAL'] = {
 	category: Blockly.CATEGORY_VARIABLES,
 	init: function () {
-		this.appendValueInput('INPUT0')
-			.setCheck(null)
+		this.appendValueInput('NAME')
+			.setCheck()
 			.appendField('initialize global')
 			.appendField(new Blockly.FieldTextInput('name'), 'VAR_NAME')
 			.appendField('to');
@@ -16,59 +16,41 @@ Blockly.Blocks['VARIABLES_INIT_GLOBAL'] = {
 		this.setHelpUrl('');
 	},
 	validate: function (value) {
-		if (value.match(Blockly.VALID_IDENTIFIER)) {
-			let variables = Object.values(this.workspace.variableDB);
-			if (!variables.includes(value)) {
-				console.log(value);
-				this.workspace.variableDB[this.id] = value;
-				return value;
-			} else {
-				this.workspace.variableDB[this.id] = this.getFieldValue('VAR_NAME');
+		if (!value.match(Blockly.VALID_IDENTIFIER)) {
+			return null;
+		} else {
+			if (this.workspace.getAllVariableNames().includes(value)) {
 				return null;
 			}
-		} else {
-			return null;
 		}
 	},
-	typeBlocking: [
-		{
-			key: 'initialize global variable',
-			blockType: 'VARIABLES_INIT_GLOBAL',
-			fieldValues: {},
-		},
-	],
 };
 
 Blockly.Blocks['VARIABLES_GET'] = {
 	category: Blockly.CATEGORY_VARIABLES,
 	init: function () {
-		this.variableList = [['name', 'name']];
-		this.appendDummyInput()
+		this.appendDummyInput('VAR_DD')
 			.appendField('get')
-			.appendField(new Blockly.FieldDropdown(this.variableList), 'VAR_LIST');
+			.appendField(new Blockly.FieldDropdown([['name', 'name']]), 'OP');
 		this.setOutput(true, null);
 		this.setColour(Blockly.VARIABLES_CATEGORY_HUE);
 		this.setTooltip('');
 		this.setHelpUrl('');
-		this.setOnChange(this.updateVariableDD.bind(this));
 	},
-  updateVariableDD: function (e) {
-    if (e instanceof Blockly.Events.BlockBase) {
-			this.variableList.splice(0, this.variableList.length);
-			Object.keys(this.workspace.variableDB).forEach((key) => {
-				this.variableList.push([
-					this.workspace.variableDB[key],
-					key,
-				]);
-      });
-      this.markDirty();
-    }
+};
+
+Blockly.Blocks['VARIABLES_SET'] = {
+	category: Blockly.CATEGORY_VARIABLES,
+	init: function () {
+		this.appendValueInput('VAR_DD')
+			.setCheck(null)
+			.appendField('set')
+			.appendField(new Blockly.FieldDropdown([['name', 'name']]), 'OP')
+			.appendField('to');
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.VARIABLES_CATEGORY_HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
 	},
-	typeBlocking: [
-		{
-			key: 'get global variable',
-			blockType: 'VARIABLES_GET_GLOBAL',
-			fieldValues: {},
-		},
-	],
 };
